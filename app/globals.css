@@ -1,26 +1,267 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* Only active once the inline script in the root layout marks JS as live,
+   so scroll-reveal initial states never hide content from non-JS visitors. */
+@custom-variant js (html.js &);
+
+/* ============================================================
+   Design tokens — mirrors the desertant.com system.
+   Declared in @theme so every value becomes a real Tailwind
+   utility (bg-cream, text-ink, font-display, rounded-3xl, ...).
+   ============================================================ */
+@theme {
+  /* ---- palette ---- */
+  --color-cream: #fbfaf4;
+  --color-cream-dark: #f2f1eb;
+  --color-ink: #0e1113;
+  --color-sage: #adb49c;
+  --color-teal: #c3d3ce;
+  --color-forest: #181e1d;
+  --color-terracotta: #db704c;
+  --color-sand: #d6d0c3;
+  --color-warm-grey: #b7b6b4;
+  --color-clay: #d53712;
+  --color-deep-teal: #1c525d;
+  --color-dusty-pink: #b6969d;
+  --color-peach: #f8dbca;
+  --color-faun: #cec4bb;
+  --color-cool-grey: #dcdedf;
+  --color-stone: #b4aea6;
+  --color-dark-grey: #666967;
+  --color-mist: #57606a;
+  --color-paper: #fcfbf7;
+
+  /* semantic surfaces + text */
+  --color-canvas: #fbfaf4;
+  --color-sunken: #f2f1ea;
+  --color-inset: #e9e8e0;
+  --color-secondary: #2c3134;
+  --color-muted: #57606a;
+  --color-faint: #9aa1a5;
+  --color-line: rgba(14, 17, 19, 0.1);
+  --color-line-strong: rgba(14, 17, 19, 0.2);
+  --color-line-inverse: rgba(251, 250, 244, 0.2);
+  --color-accent-hover: #2c3134;
+
+  /* signals */
+  --color-success: #3c8a52;
+  --color-warning: #c2691a;
+  --color-danger: #be3a2e;
+  --color-info: #1e8c8c;
+
+  /* ---- type ---- */
+  --font-display:
+    var(--font-inclusive-sans), "Inclusive Sans", "Helvetica Neue", Helvetica,
+    Arial, system-ui, sans-serif;
+  --font-mono:
+    var(--font-jetbrains-mono), "JetBrains Mono", SFMono-Regular, ui-monospace,
+    Menlo, monospace;
+
+  --text-2xs: 0.6875rem;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.5rem;
+  --text-2xl: 2rem;
+  --text-3xl: 2.5rem;
+  --text-4xl: 3.5rem;
+  --text-5xl: 4.5rem;
+  --text-6xl: 6rem;
+  --text-7xl: 7.5rem;
+
+  --leading-display: 0.85;
+  --leading-none: 1;
+  --leading-tight: 1.06;
+  --leading-snug: 1.2;
+  --leading-normal: 1.4;
+  --leading-relaxed: 1.7;
+
+  --tracking-display: -0.06em;
+  --tracking-tighter: -0.04em;
+  --tracking-tight: -0.03em;
+  --tracking-normal: 0em;
+  --tracking-wide: 0.04em;
+  --tracking-wider: 0.06em;
+  --tracking-widest: 0.18em;
+
+  /* ---- radius ---- */
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 24px;
+  --radius-3xl: 32px;
+  --radius-pill: 40px;
+
+  /* ---- elevation ---- */
+  --shadow-xs: 0px 1px 2px 0px rgba(14, 17, 19, 0.06);
+  --shadow-sm:
+    0px 1px 2px 0px rgba(14, 17, 19, 0.06), 0px 2px 4px 0px rgba(14, 17, 19, 0.05);
+  --shadow-md:
+    0px 2px 4px 0px rgba(14, 17, 19, 0.05),
+    0px 6px 14px -3px rgba(14, 17, 19, 0.1);
+  --shadow-lg: 0px 12px 30px 0px rgba(0, 0, 0, 0.15);
+  --shadow-card: 0px 20px 76px 0px rgba(0, 0, 0, 0.15);
+  --shadow-card-lift: 0px 30px 90px 0px rgba(0, 0, 0, 0.22);
+  --shadow-photo: 0px 20px 100px 0px rgba(0, 0, 0, 0.25);
+
+  /* ---- motion ---- */
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in: cubic-bezier(0.5, 0, 0.9, 0.2);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  --animate-marquee: marquee 42s linear infinite;
+
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  /* ---- containers ---- */
+  --container-site: 1172px;
+  --container-wide: 1480px;
+  --container-measure: 46rem;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+/* ============================================================
+   Base
+   ============================================================ */
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    color-scheme: light;
+    /* page gutter + header height, used via arbitrary values */
+    --gutter: clamp(1.25rem, 5vw, 4rem);
+    --head-h: clamp(5rem, 5vw + 2.5rem, 6.875rem);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    /* Full-bleed bands are 100vw wide, which exceeds the visible width by the
+       scrollbar. `clip` trims that without creating a scroll container, so the
+       sticky header keeps working. */
+    overflow-x: clip;
+    background: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    line-height: var(--leading-normal);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: var(--color-terracotta);
+    color: var(--color-cream);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-deep-teal);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ============================================================
+   Utilities that have no Tailwind equivalent
+   ============================================================ */
+@utility full-bleed {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+}
+
+@utility marquee-mask {
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 8%,
+    #000 92%,
+    transparent
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 8%,
+    #000 92%,
+    transparent
+  );
+}
+
+@utility text-balance-tight {
+  text-wrap: balance;
+}
+
+/* ============================================================
+   Sprayed-stencil display text (see components/grain-text.tsx)
+   ============================================================ */
+.grain::before,
+.grain::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  color: var(--grain-ink, var(--color-ink));
+  pointer-events: none;
+}
+
+.grain::before {
+  filter: url(#mw-grain-back);
+}
+
+.grain::after {
+  top: 2px;
+  filter: url(#mw-grain-front);
+}
+
+.grain-paper {
+  position: absolute;
+  left: 0;
+  top: 2px;
+  width: 100%;
+  color: var(--grain-paper, var(--color-canvas));
+  pointer-events: none;
+  opacity: 0.6;
+  filter: url(#mw-grain-paper);
+}
+
+/* Safari/Firefox repaint the filter on every scroll frame otherwise. */
+.grain::before,
+.grain::after,
+.grain-paper {
+  will-change: filter;
+}
+
+/* The filtered layers cannot wrap (they redraw a single attr string), so on
+   narrow screens fall back to plain type rather than let a long line overrun. */
+@media (max-width: 639px) {
+  .grain {
+    color: inherit;
+  }
+  .grain::before,
+  .grain::after,
+  .grain-paper {
+    display: none;
+  }
 }

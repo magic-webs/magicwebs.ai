@@ -7,8 +7,9 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        // Nothing secret here; these simply have no search value.
-        disallow: ["/api/", "/_next/"],
+        // /owner is password-gated regardless; this just keeps it out of
+        // results. The rest simply have no search value.
+        disallow: ["/api/", "/_next/", "/owner"],
       },
     ],
     sitemap: `${SITE_URL}/sitemap.xml`,

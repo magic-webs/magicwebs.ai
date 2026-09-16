@@ -1,10 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Inclusive_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
-import { SiteHeader } from "@/components/site-header";
-import { SiteFooter } from "@/components/site-footer";
-import { GrainDefs } from "@/components/grain-text";
-import { SmoothScroll } from "@/components/smooth-scroll";
 import { JsonLd, SITE_URL, organizationJsonLd } from "@/lib/seo";
 import { company } from "@/lib/site";
 
@@ -84,6 +80,10 @@ export const viewport: Viewport = {
   colorScheme: "light",
 };
 
+/**
+ * Document shell only. Header, footer and the visitor tracker live in
+ * `app/(site)/layout.tsx` so that `/owner` can render without them.
+ */
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
@@ -101,22 +101,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <JsonLd data={organizationJsonLd()} />
       </head>
       <body className="flex min-h-full flex-col bg-canvas text-ink">
-        <a
-          href="#main"
-          className="sr-only rounded-pill bg-ink px-4 py-2 font-mono text-sm text-cream focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-50"
-        >
-          Skip to content
-        </a>
-        <GrainDefs />
-        <SmoothScroll />
-        <SiteHeader />
-        <main
-          id="main"
-          className="flex flex-1 flex-col px-(--gutter) pb-[clamp(1.5rem,3vw,2.5rem)]"
-        >
-          {children}
-        </main>
-        <SiteFooter />
+        {children}
       </body>
     </html>
   );

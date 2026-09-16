@@ -183,6 +183,21 @@
 }
 
 /* ============================================================
+   Owner-panel data visualisation
+   Slots 1-2 are brand hues validated against the paper surface
+   (OKLCH lightness band, chroma floor, protan/deuteran CVD dE 8.9,
+   normal-vision dE 24.4, contrast >= 3:1). Do not hand-tweak these
+   without re-running the check. The site is light-only by design
+   (see :root color-scheme), so there is no dark variant to select.
+   ============================================================ */
+.viz {
+  --viz-series-1: #12938d;
+  --viz-series-2: #db704c;
+  --viz-grid: rgba(14, 17, 19, 0.08);
+  --viz-track: rgba(14, 17, 19, 0.07);
+}
+
+/* ============================================================
    Utilities that have no Tailwind equivalent
    ============================================================ */
 @utility full-bleed {

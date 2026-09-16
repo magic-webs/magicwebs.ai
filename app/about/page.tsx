@@ -30,9 +30,9 @@ export const metadata: Metadata = pageMeta({
 
 export default function AboutPage() {
   return (
-    <Container className="flex flex-col pt-[clamp(2rem,6vh,4.5rem)]">
+    <Container className="flex flex-col pt-[clamp(0.5rem,2vw,1.5rem)]">
       <JsonLd data={faqJsonLd(faqs)} />
-      <section className="flex flex-col gap-8 pt-[clamp(1rem,5vh,3rem)]">
+      <section className="flex flex-col gap-8 pt-[clamp(0.5rem,2vw,1.5rem)]">
         <Reveal className="flex flex-col gap-6">
           <Eyebrow>About</Eyebrow>
           <Display className="text-[clamp(2.25rem,7.5vw,6rem)]">

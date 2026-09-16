@@ -36,9 +36,9 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <Container className="flex flex-col pt-[clamp(2rem,6vh,4.5rem)]">
+    <Container className="flex flex-col pt-[clamp(0.5rem,2vw,1.5rem)]">
       {/* ---------- Hero ---------- */}
-      <section className="flex flex-col gap-[clamp(1.75rem,3.5vw,3rem)] pt-[clamp(2rem,9vh,5.5rem)]">
+      <section className="flex flex-col gap-[clamp(1.25rem,2.5vw,2rem)] pt-[clamp(1rem,3vw,2.5rem)]">
         <Reveal>
           <Display>
             <GrainText>Automate your business</GrainText>
@@ -72,7 +72,7 @@ export default function Home() {
       </section>
 
       {/* ---------- Platform fan ---------- */}
-      <div className="pt-[clamp(3rem,7vw,5rem)]">
+      <div className="pt-[clamp(1.25rem,3vw,2.5rem)]">
         <PlatformFan platforms={platforms} />
       </div>
 

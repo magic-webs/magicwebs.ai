@@ -64,7 +64,7 @@ export function PlatformFan({ platforms }: { platforms: Platform[] }) {
         // padding plus negative block margin lets the tilt and shadow spill
         // without being clipped by the scroll container.
         "full-bleed m-0 flex list-none snap-x snap-mandatory scroll-px-6 items-center overflow-x-auto overflow-y-hidden",
-        "-my-14 gap-6 px-6 py-24 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
+        "-my-10 gap-5 px-6 py-16 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
         "lg:gap-0 lg:[justify-content:safe_center] lg:px-[max(2rem,calc((100vw-1240px)/2))]",
       )}
     >

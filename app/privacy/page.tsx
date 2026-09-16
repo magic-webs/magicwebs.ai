@@ -52,8 +52,8 @@ const sections = [
 
 export default function PrivacyPage() {
   return (
-    <Container className="flex flex-col pt-[clamp(2rem,6vh,4.5rem)]">
-      <section className="flex flex-col gap-8 pt-[clamp(1rem,5vh,3rem)]">
+    <Container className="flex flex-col pt-[clamp(0.5rem,2vw,1.5rem)]">
+      <section className="flex flex-col gap-8 pt-[clamp(0.5rem,2vw,1.5rem)]">
         <Reveal className="flex flex-col gap-6">
           <Eyebrow>Legal</Eyebrow>
           <Display className="text-[clamp(2.5rem,6.5vw,4.5rem)]">

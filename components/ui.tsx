@@ -34,7 +34,7 @@ export function Section({
     <section
       id={id}
       className={cx(
-        "flex scroll-mt-24 flex-col gap-8 pt-[clamp(4rem,10vh,7.5rem)]",
+        "flex scroll-mt-24 flex-col gap-6 pt-[clamp(2.25rem,5vw,4rem)]",
         className,
       )}
     >
@@ -335,7 +335,7 @@ export function StatRow({
   return (
     <dl
       className={cx(
-        "m-0 grid grid-cols-2 gap-6 border-y py-10 md:grid-cols-4",
+        "m-0 grid grid-cols-2 gap-6 border-y py-7 md:grid-cols-4",
         invert ? "border-cream/20" : "border-line",
         className,
       )}
@@ -384,7 +384,7 @@ export function Band({
   return (
     <div
       className={cx(
-        "full-bleed mt-[clamp(4rem,10vh,7.5rem)] px-(--gutter) py-[clamp(4rem,9vw,7rem)]",
+        "full-bleed mt-[clamp(2.25rem,5vw,4rem)] px-(--gutter) py-[clamp(2.25rem,5vw,4rem)]",
         tones[tone],
         className,
       )}

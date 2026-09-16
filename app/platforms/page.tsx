@@ -26,8 +26,8 @@ export const metadata: Metadata = pageMeta({
 
 export default function PlatformsPage() {
   return (
-    <Container className="flex flex-col pt-[clamp(2rem,6vh,4.5rem)]">
-      <section className="flex flex-col gap-8 pt-[clamp(1rem,5vh,3rem)]">
+    <Container className="flex flex-col pt-[clamp(0.5rem,2vw,1.5rem)]">
+      <section className="flex flex-col gap-8 pt-[clamp(0.5rem,2vw,1.5rem)]">
         <Reveal className="flex flex-col gap-6">
           <Eyebrow>Platforms</Eyebrow>
           <Display className="text-[clamp(2.25rem,7.5vw,6rem)]">
@@ -42,7 +42,7 @@ export default function PlatformsPage() {
         </Reveal>
       </section>
 
-      <div className="pt-[clamp(3rem,7vw,5rem)]">
+      <div className="pt-[clamp(1.25rem,3vw,2.5rem)]">
         <PlatformFan platforms={platforms} />
       </div>
 

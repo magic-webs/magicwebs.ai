@@ -12,7 +12,7 @@ import Link from "next/link";
 
 export default function NotFound() {
   return (
-    <Container className="flex flex-1 flex-col justify-center gap-8 py-[clamp(4rem,14vh,9rem)]">
+    <Container className="flex flex-1 flex-col justify-center gap-8 py-[clamp(2rem,5vw,4rem)]">
       <Eyebrow>Error 404</Eyebrow>
       <Display className="text-[clamp(2.5rem,9vw,6rem)]">
         That page has{" "}

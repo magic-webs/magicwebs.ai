@@ -112,7 +112,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <SiteHeader />
         <main
           id="main"
-          className="flex flex-1 flex-col px-(--gutter) pb-[clamp(3rem,6vw,5rem)]"
+          className="flex flex-1 flex-col px-(--gutter) pb-[clamp(1.5rem,3vw,2.5rem)]"
         >
           {children}
         </main>

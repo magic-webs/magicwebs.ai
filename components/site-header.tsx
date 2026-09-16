@@ -14,7 +14,7 @@ function Caret({ open }: { open: boolean }) {
       aria-hidden="true"
       focusable="false"
       className={cx(
-        "size-2.5 transition-transform duration-200 ease-out",
+        "size-2.5 shrink-0 transition-transform duration-200 ease-out",
         open && "rotate-180",
       )}
     >
@@ -30,12 +30,46 @@ function Caret({ open }: { open: boolean }) {
   );
 }
 
-const navLinkClass =
-  "relative block w-full border-b border-line py-3 font-mono text-lg tracking-wide whitespace-nowrap lg:w-auto lg:border-0 lg:py-2 lg:text-sm";
-
-// Animated underline, desktop only.
-const underline =
-  "lg:after:absolute lg:after:inset-x-0 lg:after:bottom-0 lg:after:h-px lg:after:origin-left lg:after:scale-x-0 lg:after:bg-current lg:after:transition-transform lg:after:duration-200 lg:after:ease-out lg:hover:after:scale-x-100 lg:aria-[current=page]:after:scale-x-100";
+/** One platform row, shared by the desktop panel and the mobile sheet. */
+function PlatformRow({
+  slug,
+  name,
+  kind,
+  swatch,
+  initials,
+  onNavigate,
+}: {
+  slug: string;
+  name: string;
+  kind: string;
+  swatch: string;
+  initials: string;
+  onNavigate?: () => void;
+}) {
+  return (
+    <Link
+      href={`/platforms/${slug}`}
+      onClick={onNavigate}
+      className="flex items-center gap-3 rounded-lg p-2 no-underline transition-colors duration-150 ease-standard hover:bg-ink/5"
+    >
+      <span
+        aria-hidden="true"
+        className="grid size-9.5 shrink-0 place-items-center rounded-md font-mono text-xs font-medium text-ink"
+        style={{ background: swatch }}
+      >
+        {initials}
+      </span>
+      <span className="flex min-w-0 flex-col">
+        <span className="font-display text-base leading-snug font-semibold tracking-tight">
+          {name}
+        </span>
+        <span className="truncate font-mono text-2xs tracking-wide text-muted">
+          {kind}
+        </span>
+      </span>
+    </Link>
+  );
+}
 
 function subscribeToScroll(onChange: () => void) {
   window.addEventListener("scroll", onChange, { passive: true });
@@ -50,6 +84,7 @@ export function SiteHeader() {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const [panelOpen, setPanelOpen] = useState(false);
+  const [mobilePlatformsOpen, setMobilePlatformsOpen] = useState(false);
   const [lastPath, setLastPath] = useState(pathname);
   const panelWrap = useRef<HTMLDivElement>(null);
 
@@ -59,6 +94,7 @@ export function SiteHeader() {
     setLastPath(pathname);
     setMenuOpen(false);
     setPanelOpen(false);
+    setMobilePlatformsOpen(false);
   }
 
   const stuck = useSyncExternalStore(subscribeToScroll, isScrolled, () => false);
@@ -71,7 +107,7 @@ export function SiteHeader() {
     };
   }, [menuOpen]);
 
-  // Dismiss the platforms panel on outside click or Escape.
+  // Dismiss the desktop panel on outside click or Escape.
   useEffect(() => {
     if (!panelOpen) return;
     const onDown = (e: MouseEvent) => {
@@ -88,144 +124,206 @@ export function SiteHeader() {
     };
   }, [panelOpen]);
 
+  // Escape also closes the mobile sheet.
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMenuOpen(false);
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [menuOpen]);
+
   const onPlatforms = pathname.startsWith("/platforms");
+  const closeMenu = () => setMenuOpen(false);
+
+  const deskLink =
+    "relative py-2 font-mono text-sm tracking-wide whitespace-nowrap no-underline after:absolute after:inset-x-0 after:bottom-0 after:h-px after:origin-left after:scale-x-0 after:bg-current after:transition-transform after:duration-200 after:ease-out hover:after:scale-x-100 aria-[current=page]:after:scale-x-100";
+
+  const mobileLink =
+    "border-b border-line py-3.5 font-mono text-base tracking-wide text-ink no-underline";
 
   return (
-    <header
-      className={cx(
-        "sticky top-0 z-20 flex min-h-(--head-h) items-center justify-between gap-6 border-b bg-canvas/85 px-[clamp(1.25rem,3vw,2.5rem)] backdrop-blur-md backdrop-saturate-150 transition-colors duration-200 ease-standard",
-        stuck ? "border-line" : "border-transparent",
-      )}
-    >
-      <Brandmark />
-
-      <button
-        type="button"
-        className="relative h-11 w-10 shrink-0 cursor-pointer border-0 bg-transparent p-0 text-ink lg:hidden"
-        aria-expanded={menuOpen}
-        aria-controls="site-nav"
-        aria-label={menuOpen ? "Close menu" : "Open menu"}
-        onClick={() => setMenuOpen((v) => !v)}
-      >
-        <span
-          className={cx(
-            "absolute inset-x-2 h-px bg-current transition-transform duration-200 ease-out",
-            menuOpen ? "top-5.25 rotate-45" : "top-4.25",
-          )}
-        />
-        <span
-          className={cx(
-            "absolute inset-x-2 h-px bg-current transition-transform duration-200 ease-out",
-            menuOpen ? "top-5.25 -rotate-45" : "top-6.25",
-          )}
-        />
-      </button>
-
-      <nav
-        id="site-nav"
-        aria-label="Primary"
-        data-lenis-prevent
+    <>
+      <header
         className={cx(
-          // mobile sheet
-          "fixed inset-x-0 top-(--head-h) bottom-0 z-25 flex flex-col items-stretch gap-2 overflow-y-auto bg-canvas px-(--gutter) pt-6 pb-16 transition-[opacity,transform,visibility] duration-200 ease-out",
-          menuOpen
-            ? "visible translate-y-0 opacity-100"
-            : "invisible -translate-y-2 opacity-0",
-          // desktop bar
-          "lg:visible lg:static lg:translate-y-0 lg:flex-row lg:items-center lg:gap-6 lg:overflow-visible lg:bg-transparent lg:p-0 lg:opacity-100",
+          "sticky top-0 z-30 flex min-h-(--head-h) items-center justify-between gap-6 border-b bg-canvas/85 px-[clamp(1.25rem,3vw,2.5rem)] backdrop-blur-md backdrop-saturate-150 transition-colors duration-200 ease-standard",
+          stuck || menuOpen ? "border-line" : "border-transparent",
         )}
       >
-        <div className="lg:relative" ref={panelWrap}>
-          <button
-            type="button"
-            className={cx(
-              navLinkClass,
-              underline,
-              "flex cursor-pointer items-center justify-between gap-1.5 border-0 bg-transparent text-ink lg:justify-start",
-              "border-b border-line lg:border-0",
-            )}
-            aria-expanded={panelOpen}
-            aria-current={onPlatforms ? "page" : undefined}
-            onClick={() => setPanelOpen((v) => !v)}
-          >
-            Platforms
-            <Caret open={panelOpen} />
-          </button>
+        <Brandmark />
 
-          <div
-            className={cx(
-              // mobile: inline disclosure
-              "py-3 lg:py-0",
-              panelOpen ? "block" : "hidden",
-              // desktop: floating panel
-              "lg:absolute lg:top-[calc(100%+0.75rem)] lg:left-1/2 lg:block lg:w-150 lg:max-w-[calc(100vw-4rem)] lg:-translate-x-1/2 lg:rounded-2xl lg:border lg:border-line lg:bg-paper lg:p-3 lg:shadow-lg lg:transition-[opacity,transform,visibility] lg:duration-200 lg:ease-out",
-              panelOpen
-                ? "lg:visible lg:translate-y-0 lg:opacity-100"
-                : "lg:invisible lg:-translate-y-1.5 lg:opacity-0",
-            )}
-          >
-            <div className="grid w-full grid-cols-1 gap-x-3 gap-y-1 sm:grid-cols-2">
-              {platforms.map((p) => (
+        {/* ---------------- desktop ---------------- */}
+        <nav className="hidden items-center gap-6 lg:flex" aria-label="Primary">
+          <div className="relative" ref={panelWrap}>
+            <button
+              type="button"
+              className={cx(
+                deskLink,
+                "flex cursor-pointer items-center gap-1.5 border-0 bg-transparent text-ink",
+              )}
+              aria-expanded={panelOpen}
+              aria-current={onPlatforms ? "page" : undefined}
+              onClick={() => setPanelOpen((v) => !v)}
+            >
+              Platforms
+              <Caret open={panelOpen} />
+            </button>
+
+            <div
+              className={cx(
+                "absolute top-[calc(100%+0.75rem)] left-1/2 w-150 max-w-[calc(100vw-4rem)] -translate-x-1/2 rounded-2xl border border-line bg-paper p-3 shadow-lg transition-[opacity,transform,visibility] duration-200 ease-out",
+                panelOpen
+                  ? "visible translate-y-0 opacity-100"
+                  : "invisible -translate-y-1.5 opacity-0",
+              )}
+            >
+              <div className="grid w-full grid-cols-2 gap-x-3 gap-y-1">
+                {platforms.map((p) => (
+                  <PlatformRow
+                    key={p.slug}
+                    slug={p.slug}
+                    name={p.name}
+                    kind={p.kind}
+                    swatch={p.swatch}
+                    initials={p.initials}
+                  />
+                ))}
                 <Link
-                  key={p.slug}
-                  href={`/platforms/${p.slug}`}
-                  className="flex items-center gap-3 rounded-lg p-2 transition-colors duration-150 ease-standard hover:bg-ink/5"
+                  href="/platforms"
+                  className="flex items-center gap-3 rounded-lg p-2 no-underline transition-colors duration-150 ease-standard hover:bg-ink/5"
                 >
                   <span
                     aria-hidden="true"
-                    className="grid size-9.5 shrink-0 place-items-center rounded-md font-mono text-xs font-medium text-ink"
-                    style={{ background: p.swatch }}
+                    className="grid size-9.5 shrink-0 place-items-center rounded-md bg-inset font-mono text-xs font-medium text-ink"
                   >
-                    {p.initials}
+                    →
                   </span>
                   <span className="flex min-w-0 flex-col">
                     <span className="font-display text-base leading-snug font-semibold tracking-tight">
-                      {p.name}
+                      All platforms
                     </span>
                     <span className="truncate font-mono text-2xs tracking-wide text-muted">
-                      {p.kind}
+                      Overview
                     </span>
                   </span>
                 </Link>
+              </div>
+            </div>
+          </div>
+
+          {navLinks.map((l) => (
+            <Link
+              key={l.href}
+              href={l.href}
+              className={cx(deskLink, "text-ink")}
+              aria-current={pathname === l.href ? "page" : undefined}
+            >
+              {l.label}
+            </Link>
+          ))}
+
+          <Button href="/contact" size="sm">
+            Book a demo
+          </Button>
+        </nav>
+
+        {/* ---------------- mobile trigger ---------------- */}
+        <button
+          type="button"
+          className="relative h-11 w-10 shrink-0 cursor-pointer border-0 bg-transparent p-0 text-ink lg:hidden"
+          aria-expanded={menuOpen}
+          aria-controls="site-nav"
+          aria-label={menuOpen ? "Close menu" : "Open menu"}
+          onClick={() => setMenuOpen((v) => !v)}
+        >
+          <span
+            className={cx(
+              "absolute inset-x-2 h-0.5 rounded bg-current transition-transform duration-200 ease-out",
+              menuOpen ? "top-5.25 rotate-45" : "top-4",
+            )}
+          />
+          <span
+            className={cx(
+              "absolute inset-x-2 h-0.5 rounded bg-current transition-transform duration-200 ease-out",
+              menuOpen ? "top-5.25 -rotate-45" : "top-6.5",
+            )}
+          />
+        </button>
+      </header>
+
+      {/*
+        Sibling of <header>, not a child. The header sets `backdrop-filter`,
+        which makes it the containing block for fixed descendants — nested
+        inside it this sheet inherited the header's 88px box rather than
+        filling the viewport.
+      */}
+      <div
+        id="site-nav"
+        data-lenis-prevent
+        aria-hidden={!menuOpen}
+        className={cx(
+          "fixed inset-x-0 top-(--head-h) bottom-0 z-20 overflow-y-auto overscroll-contain bg-canvas px-(--gutter) pt-4 pb-10 transition-[opacity,transform,visibility] duration-200 ease-out lg:hidden",
+          menuOpen
+            ? "visible translate-y-0 opacity-100"
+            : "invisible -translate-y-2 opacity-0",
+        )}
+      >
+        <nav className="flex flex-col" aria-label="Mobile">
+          <button
+            type="button"
+            className="flex w-full cursor-pointer items-center justify-between border-0 border-b border-line bg-transparent py-3.5 font-mono text-base tracking-wide text-ink"
+            aria-expanded={mobilePlatformsOpen}
+            onClick={() => setMobilePlatformsOpen((v) => !v)}
+          >
+            Platforms
+            <Caret open={mobilePlatformsOpen} />
+          </button>
+
+          {mobilePlatformsOpen && (
+            <div className="flex flex-col gap-1 border-b border-line py-2">
+              {platforms.map((p) => (
+                <PlatformRow
+                  key={p.slug}
+                  slug={p.slug}
+                  name={p.name}
+                  kind={p.kind}
+                  swatch={p.swatch}
+                  initials={p.initials}
+                  onNavigate={closeMenu}
+                />
               ))}
               <Link
                 href="/platforms"
-                className="flex items-center gap-3 rounded-lg p-2 transition-colors duration-150 ease-standard hover:bg-ink/5"
+                onClick={closeMenu}
+                className="px-2 py-2 font-mono text-xs tracking-wide text-muted uppercase no-underline"
               >
-                <span
-                  aria-hidden="true"
-                  className="grid size-9.5 shrink-0 place-items-center rounded-md bg-inset font-mono text-xs font-medium text-ink"
-                >
-                  →
-                </span>
-                <span className="flex min-w-0 flex-col">
-                  <span className="font-display text-base leading-snug font-semibold tracking-tight">
-                    All platforms
-                  </span>
-                  <span className="truncate font-mono text-2xs tracking-wide text-muted">
-                    Overview
-                  </span>
-                </span>
+                All platforms →
               </Link>
             </div>
-          </div>
-        </div>
+          )}
 
-        {navLinks.map((link) => (
-          <Link
-            key={link.href}
-            href={link.href}
-            className={cx(navLinkClass, underline, "text-ink")}
-            aria-current={pathname === link.href ? "page" : undefined}
-          >
-            {link.label}
+          {navLinks.map((l) => (
+            <Link
+              key={l.href}
+              href={l.href}
+              onClick={closeMenu}
+              aria-current={pathname === l.href ? "page" : undefined}
+              className={cx(mobileLink, "aria-[current=page]:text-muted")}
+            >
+              {l.label}
+            </Link>
+          ))}
+
+          <Link href="/contact" onClick={closeMenu} className={mobileLink}>
+            Contact
           </Link>
-        ))}
 
-        <Button href="/contact" size="sm" className="mt-4 lg:mt-0">
-          Book a demo
-        </Button>
-      </nav>
-    </header>
+          <Button href="/contact" size="lg" className="mt-6 w-full">
+            Book a demo
+          </Button>
+        </nav>
+      </div>
+    </>
   );
 }

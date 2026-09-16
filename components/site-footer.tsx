@@ -17,8 +17,8 @@ export function SiteFooter() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="mx-auto mt-[clamp(4rem,10vh,7rem)] w-full max-w-site border-t border-line px-(--gutter) pt-[clamp(1.75rem,3vh,2.5rem)] pb-8">
-      <div className="mb-[clamp(1.5rem,3vh,2rem)] grid grid-cols-1 gap-8 border-b border-line pb-[clamp(2rem,4vh,3rem)] sm:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_1fr]">
+    <footer className="mx-auto mt-[clamp(2.25rem,5vw,3.5rem)] w-full max-w-site border-t border-line px-(--gutter) pt-[clamp(1.25rem,2.5vw,2rem)] pb-8">
+      <div className="mb-[clamp(1rem,2vw,1.5rem)] grid grid-cols-1 gap-8 border-b border-line pb-[clamp(1.5rem,3vw,2.25rem)] sm:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_1fr]">
         <div className="flex flex-col gap-4">
           <Brandmark />
           <p className="m-0 max-w-[34ch] font-mono text-sm leading-relaxed text-muted">

@@ -47,8 +47,8 @@ const testimonials = [
 
 export default function WorkPage() {
   return (
-    <Container className="flex flex-col pt-[clamp(2rem,6vh,4.5rem)]">
-      <section className="flex flex-col gap-8 pt-[clamp(1rem,5vh,3rem)]">
+    <Container className="flex flex-col pt-[clamp(0.5rem,2vw,1.5rem)]">
+      <section className="flex flex-col gap-8 pt-[clamp(0.5rem,2vw,1.5rem)]">
         <Reveal className="flex flex-col gap-6">
           <Eyebrow>Work</Eyebrow>
           <Display className="text-[clamp(2.25rem,7.5vw,6rem)]">
@@ -63,7 +63,7 @@ export default function WorkPage() {
         </Reveal>
       </section>
 
-      <Reveal delay={1} className="pt-[clamp(2.5rem,6vw,4rem)]">
+      <Reveal delay={1} className="pt-[clamp(1.25rem,3vw,2.5rem)]">
         <StatRow items={stats} />
       </Reveal>
 

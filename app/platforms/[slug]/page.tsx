@@ -56,7 +56,7 @@ export default async function PlatformPage({
   const productLd = platformJsonLd(platform.slug);
 
   return (
-    <Container className="flex flex-col pt-[clamp(2rem,6vh,4.5rem)]">
+    <Container className="flex flex-col pt-[clamp(0.5rem,2vw,1.5rem)]">
       {productLd && <JsonLd data={productLd} />}
       <JsonLd
         data={breadcrumbJsonLd([
@@ -67,7 +67,7 @@ export default async function PlatformPage({
       />
 
       {/* ---------- Hero ---------- */}
-      <section className="flex flex-col gap-8 pt-[clamp(1rem,5vh,3rem)]">
+      <section className="flex flex-col gap-8 pt-[clamp(0.5rem,2vw,1.5rem)]">
         <Reveal className="flex flex-col gap-6">
           <div className="flex flex-wrap items-center gap-3">
             <span
@@ -116,7 +116,7 @@ export default async function PlatformPage({
 
       {/* ---------- Stats ---------- */}
       {platform.stats && platform.stats.length > 1 && (
-        <Reveal delay={1} className="pt-[clamp(2.5rem,6vw,4rem)]">
+        <Reveal delay={1} className="pt-[clamp(1.25rem,3vw,2.5rem)]">
           <StatRow items={platform.stats} />
         </Reveal>
       )}

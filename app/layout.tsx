@@ -44,6 +44,9 @@ export const metadata: Metadata = {
   creator: company.legalName,
   publisher: company.legalName,
   category: "technology",
+  // Google Search Console site verification. Set GOOGLE_SITE_VERIFICATION to
+  // the token from the "HTML tag" method; unset means no meta tag is emitted.
+  verification: { google: process.env.GOOGLE_SITE_VERIFICATION },
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",

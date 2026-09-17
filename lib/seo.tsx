@@ -17,7 +17,9 @@ export const routes = [
   { path: "/work", priority: 0.6, changeFrequency: "monthly" as const },
   { path: "/about", priority: 0.6, changeFrequency: "monthly" as const },
   { path: "/contact", priority: 0.6, changeFrequency: "monthly" as const },
+  { path: "/terms", priority: 0.2, changeFrequency: "yearly" as const },
   { path: "/privacy", priority: 0.2, changeFrequency: "yearly" as const },
+  { path: "/refund", priority: 0.2, changeFrequency: "yearly" as const },
 ];
 
 /**
@@ -89,7 +91,11 @@ export function organizationJsonLd() {
         "@type": "WebSite",
         "@id": `${SITE_URL}/#website`,
         url: SITE_URL,
+        // Google's "site name" feature reads name/alternateName from the
+        // WebSite node on the root page. Without these it falls back to the
+        // bare domain in the result header.
         name: company.name,
+        alternateName: company.legalName,
         description: company.sub,
         publisher: { "@id": `${SITE_URL}/#organization` },
         inLanguage: "en",

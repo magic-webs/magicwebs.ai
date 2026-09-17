@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Brandmark } from "@/components/brandmark";
+import { legalPages } from "@/lib/legal";
 import { company, navLinks, platforms } from "@/lib/site";
 
 const footLink =
@@ -101,12 +102,15 @@ export function SiteFooter() {
           {company.offices.map((o) => (
             <span key={o.label}>{o.label}</span>
           ))}
-          <Link
-            className="no-underline hover:underline hover:underline-offset-[3px]"
-            href="/privacy"
-          >
-            Privacy
-          </Link>
+          {legalPages.map((p) => (
+            <Link
+              key={p.href}
+              className="no-underline hover:underline hover:underline-offset-[3px]"
+              href={p.href}
+            >
+              {p.short}
+            </Link>
+          ))}
         </div>
       </div>
     </footer>

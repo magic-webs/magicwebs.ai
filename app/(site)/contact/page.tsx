@@ -16,6 +16,7 @@ import {
 } from "@/components/ui";
 import { ContactForm } from "@/components/contact-form";
 import { Reveal } from "@/components/reveal";
+import { PlatformMark } from "@/components/platform-mark";
 import { company, platforms } from "@/lib/site";
 
 export const metadata: Metadata = pageMeta({
@@ -122,13 +123,7 @@ export default function ContactPage() {
           {platforms.map((p, i) => (
             <Reveal key={p.slug} delay={(i % 3) as 0 | 1 | 2}>
               <Card href={p.url} className="h-full">
-                <span
-                  aria-hidden="true"
-                  className="grid size-10 shrink-0 place-items-center rounded-md font-mono text-xs font-medium text-ink"
-                  style={{ background: p.swatch }}
-                >
-                  {p.initials}
-                </span>
+                <PlatformMark platform={p} size="md" />
                 <CardTitle className="text-lg">{p.name} ↗</CardTitle>
                 <CardText className="text-sm">{p.claim}</CardText>
               </Card>

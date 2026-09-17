@@ -15,6 +15,7 @@ import {
 } from "@/components/ui";
 import { PlatformFan } from "@/components/platform-fan";
 import { Reveal } from "@/components/reveal";
+import { PlatformMark } from "@/components/platform-mark";
 import { platforms } from "@/lib/site";
 
 export const metadata: Metadata = pageMeta({
@@ -57,13 +58,7 @@ export default function PlatformsPage() {
             <Reveal key={p.slug} delay={(i % 3) as 0 | 1 | 2}>
               <li className="flex flex-col gap-4 border-b border-line py-8 lg:flex-row lg:items-start lg:gap-12">
                 <div className="flex items-center gap-4 lg:w-[260px] lg:shrink-0">
-                  <span
-                    aria-hidden="true"
-                    className="grid size-12 shrink-0 place-items-center rounded-lg font-mono text-sm font-medium text-ink"
-                    style={{ background: p.swatch }}
-                  >
-                    {p.initials}
-                  </span>
+                  <PlatformMark platform={p} size="lg" />
                   <div className="flex flex-col">
                     <span className="font-display text-xl leading-snug font-semibold tracking-tighter">
                       {p.name}

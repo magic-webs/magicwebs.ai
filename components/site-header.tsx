@@ -4,8 +4,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { Brandmark } from "@/components/brandmark";
+import { PlatformMark } from "@/components/platform-mark";
 import { Button, cx } from "@/components/ui";
-import { navLinks, platforms } from "@/lib/site";
+import { navLinks, platforms, type Platform } from "@/lib/site";
 
 function Caret({ open }: { open: boolean }) {
   return (
@@ -32,39 +33,25 @@ function Caret({ open }: { open: boolean }) {
 
 /** One platform row, shared by the desktop panel and the mobile sheet. */
 function PlatformRow({
-  slug,
-  name,
-  kind,
-  swatch,
-  initials,
+  platform,
   onNavigate,
 }: {
-  slug: string;
-  name: string;
-  kind: string;
-  swatch: string;
-  initials: string;
+  platform: Platform;
   onNavigate?: () => void;
 }) {
   return (
     <Link
-      href={`/platforms/${slug}`}
+      href={`/platforms/${platform.slug}`}
       onClick={onNavigate}
       className="flex items-center gap-3 rounded-lg p-2 no-underline transition-colors duration-150 ease-standard hover:bg-ink/5"
     >
-      <span
-        aria-hidden="true"
-        className="grid size-9.5 shrink-0 place-items-center rounded-md font-mono text-xs font-medium text-ink"
-        style={{ background: swatch }}
-      >
-        {initials}
-      </span>
+      <PlatformMark platform={platform} size="sm" />
       <span className="flex min-w-0 flex-col">
         <span className="font-display text-base leading-snug font-semibold tracking-tight">
-          {name}
+          {platform.name}
         </span>
         <span className="truncate font-mono text-2xs tracking-wide text-muted">
-          {kind}
+          {platform.kind}
         </span>
       </span>
     </Link>
@@ -180,14 +167,7 @@ export function SiteHeader() {
             >
               <div className="grid w-full grid-cols-2 gap-x-3 gap-y-1">
                 {platforms.map((p) => (
-                  <PlatformRow
-                    key={p.slug}
-                    slug={p.slug}
-                    name={p.name}
-                    kind={p.kind}
-                    swatch={p.swatch}
-                    initials={p.initials}
-                  />
+                  <PlatformRow key={p.slug} platform={p} />
                 ))}
                 <Link
                   href="/platforms"
@@ -283,15 +263,7 @@ export function SiteHeader() {
           {mobilePlatformsOpen && (
             <div className="flex flex-col gap-1 border-b border-line py-2">
               {platforms.map((p) => (
-                <PlatformRow
-                  key={p.slug}
-                  slug={p.slug}
-                  name={p.name}
-                  kind={p.kind}
-                  swatch={p.swatch}
-                  initials={p.initials}
-                  onNavigate={closeMenu}
-                />
+                <PlatformRow key={p.slug} platform={p} onNavigate={closeMenu} />
               ))}
               <Link
                 href="/platforms"

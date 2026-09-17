@@ -50,6 +50,11 @@ export type Platform = {
   theme: string;
   initials: string;
   swatch: string;
+  /**
+   * Brand mark, served from /public. Optional: a platform without one falls
+   * back to the swatch-and-initials tile in <PlatformMark>.
+   */
+  logo?: string;
   intro: string;
   features: { title: string; text: string }[];
   useCases: string[];
@@ -68,6 +73,7 @@ export const platforms: Platform[] = [
     theme: "forest",
     initials: "AG",
     swatch: "var(--color-teal)",
+    logo: "/images/platforms/logos/magic-agent.png",
     intro:
       "Answers enquiries on WhatsApp from your pricing and policies — not the open internet — then hands your team a structured enquiry, ready to price.",
     features: [
@@ -121,6 +127,7 @@ export const platforms: Platform[] = [
     theme: "terracotta",
     initials: "RR",
     swatch: "var(--color-terracotta)",
+    logo: "/images/platforms/logos/richyreach.png",
     intro:
       "Matches creators with brands, then runs the collaboration — matching, campaigns, verified metrics, escrow payments.",
     features: [
@@ -157,7 +164,6 @@ export const platforms: Platform[] = [
     ],
     stats: [
       { value: "2,400+", label: "Verified creators and brands" },
-      { value: "₹1.8Cr+", label: "Settled in escrow payouts" },
       { value: "350+", label: "Campaigns completed" },
       { value: "4.8x", label: "Average campaign ROI" },
     ],
@@ -166,53 +172,62 @@ export const platforms: Platform[] = [
     slug: "magic-reward",
     name: "Magic Reward",
     kind: "Campaign engine",
-    tag: "Spin to win",
-    claim: "Spin-to-win campaigns that turn footfall into customers.",
+    tag: "Play to win",
+    claim: "Play-to-win campaigns that turn footfall into customers.",
     url: "https://reward.magicwebs.ai/",
     theme: "sage",
     initials: "RW",
     swatch: "var(--color-sage)",
+    logo: "/images/platforms/logos/magic-reward.png",
     intro:
-      "A branded prize wheel on any device. Set the odds, collect the details, watch results land live. No code.",
+      "Branded prize offers on any device — a wheel, a scratch card, a slot machine and more. Set your own artwork, control the odds, collect the details you need, and watch every play land in your dashboard in real time.",
     features: [
       {
+        title: "Six offer types",
+        text: "Wheel, scratch card, slot machine, pick a box, drop the ball, memory match.",
+      },
+      {
         title: "Custom artwork",
-        text: "Your own wheel, background and pointer art.",
+        text: "Upload the board, background and pointer you designed.",
       },
       {
         title: "Controlled odds",
-        text: "Weight each prize. The draw honours your odds.",
+        text: "Give every prize a weight and the draw follows it exactly.",
       },
       {
-        title: "Data collection",
-        text: "Names, numbers and custom fields, automatically.",
+        title: "Your own questions",
+        text: "Name and phone out of the box, plus any custom field you add.",
       },
       {
-        title: "Deduplication",
-        text: "One spin per person, enforced by phone number.",
+        title: "One play per person",
+        text: "Registrations dedupe on phone number, per company.",
       },
       {
-        title: "Magic links",
-        text: "Personalised result links per registration.",
+        title: "Embed on your site",
+        text: "One script, opening on exit intent, after a delay or at scroll depth.",
+      },
+      {
+        title: "Social proof",
+        text: "Notifications built from your actual winners and signups.",
       },
       {
         title: "Live dashboard",
-        text: "Live registrations and prizes, filterable by date.",
+        text: "Every registration and prize the moment it happens, filterable by prize and date.",
       },
       {
         title: "Signed webhooks",
-        text: "Results straight into your CRM, HMAC verified.",
+        text: "Registrations and results straight into your CRM, per offer.",
       },
       {
         title: "Mobile app",
-        text: "Manage wheels and odds from the shop floor.",
+        text: "Swap prizes and odds from the shop floor, no laptop needed.",
       },
     ],
     useCases: [
       "Turn foot traffic into an owned customer list",
       "Run it from a QR code, social story or SMS",
-      "Manage campaigns from the shop floor",
-      "Stream results directly into your CRM",
+      "Open it on your own site at exit intent",
+      "Seasonal pushes — Halloween, Christmas, birthdays",
     ],
   },
   {
@@ -225,6 +240,7 @@ export const platforms: Platform[] = [
     theme: "sand",
     initials: "FM",
     swatch: "var(--color-sand)",
+    logo: "/images/platforms/logos/magic-forms.png",
     intro:
       "Build it, share one link, collect the answers. Webhooks and a REST API behind it.",
     features: [

@@ -18,6 +18,7 @@ import {
   StatRow,
 } from "@/components/ui";
 import { Reveal } from "@/components/reveal";
+import { PlatformMark } from "@/components/platform-mark";
 import { getPlatform, platforms } from "@/lib/site";
 import {
   JsonLd,
@@ -70,13 +71,7 @@ export default async function PlatformPage({
       <section className="flex flex-col gap-8 pt-[clamp(0.5rem,2vw,1.5rem)]">
         <Reveal className="flex flex-col gap-6">
           <div className="flex flex-wrap items-center gap-3">
-            <span
-              aria-hidden="true"
-              className="grid size-12 shrink-0 place-items-center rounded-lg font-mono text-sm font-medium text-ink"
-              style={{ background: platform.swatch }}
-            >
-              {platform.initials}
-            </span>
+            <PlatformMark platform={platform} size="lg" />
             <Eyebrow>{platform.kind}</Eyebrow>
           </div>
 
@@ -191,13 +186,7 @@ export default async function PlatformPage({
                 href={`/platforms/${p.slug}`}
                 className="group flex h-full flex-col gap-3 rounded-2xl border border-line bg-paper p-6 no-underline transition-[border-color,box-shadow,transform] duration-200 ease-out hover:-translate-y-[3px] hover:border-line-strong hover:shadow-md"
               >
-                <span
-                  aria-hidden="true"
-                  className="grid size-10 shrink-0 place-items-center rounded-md font-mono text-xs font-medium text-ink"
-                  style={{ background: p.swatch }}
-                >
-                  {p.initials}
-                </span>
+                <PlatformMark platform={p} size="md" />
                 <CardTitle className="text-lg">{p.name}</CardTitle>
                 <p className="m-0 font-mono text-xs leading-relaxed text-muted">
                   {p.kind}

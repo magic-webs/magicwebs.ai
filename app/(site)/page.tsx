@@ -19,6 +19,7 @@ import {
 import { PlatformFan } from "@/components/platform-fan";
 import { GrainText } from "@/components/grain-text";
 import { Reveal } from "@/components/reveal";
+import { PlatformMark } from "@/components/platform-mark";
 import {
   clients,
   company,
@@ -107,13 +108,7 @@ export default function Home() {
               className="flex flex-col gap-6 border-b border-line py-10 lg:flex-row lg:items-start lg:gap-16"
             >
               <div className="flex items-center gap-4 lg:w-[280px] lg:shrink-0">
-                <span
-                  aria-hidden="true"
-                  className="grid size-12 shrink-0 place-items-center rounded-lg font-mono text-sm font-medium text-ink"
-                  style={{ background: p.swatch }}
-                >
-                  {p.initials}
-                </span>
+                <PlatformMark platform={p} size="lg" />
                 <div className="flex flex-col">
                   <h3 className="m-0 font-display text-xl leading-snug font-semibold tracking-tighter">
                     {p.name}

@@ -323,6 +323,14 @@ export function CardText({
   );
 }
 
+/** Written out so Tailwind sees each class; the row fills its width either way. */
+const statCols: Record<number, string> = {
+  1: "md:grid-cols-1",
+  2: "md:grid-cols-2",
+  3: "md:grid-cols-3",
+  4: "md:grid-cols-4",
+};
+
 export function StatRow({
   items,
   className,
@@ -335,7 +343,8 @@ export function StatRow({
   return (
     <dl
       className={cx(
-        "m-0 grid grid-cols-2 gap-6 border-y py-7 md:grid-cols-4",
+        "m-0 grid grid-cols-2 gap-6 border-y py-7",
+        statCols[items.length] ?? "md:grid-cols-4",
         invert ? "border-cream/20" : "border-line",
         className,
       )}

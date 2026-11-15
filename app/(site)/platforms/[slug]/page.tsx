@@ -19,6 +19,7 @@ import {
 } from "@/components/ui";
 import { Reveal } from "@/components/reveal";
 import { PlatformMark } from "@/components/platform-mark";
+import { MagicAgentFigure } from "@/components/magic-agent-demo/figure";
 import { getPlatform, platforms } from "@/lib/site";
 import {
   JsonLd,
@@ -108,6 +109,13 @@ export default async function PlatformPage({
           )}
         </Reveal>
       </section>
+
+      {/* ---------- Product demo ---------- */}
+      {platform.slug === "magic-agent" && (
+        <Reveal delay={1} className="pt-[clamp(1.25rem,3vw,2.5rem)]">
+          <MagicAgentFigure />
+        </Reveal>
+      )}
 
       {/* ---------- Stats ---------- */}
       {platform.stats && platform.stats.length > 1 && (

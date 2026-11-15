@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import type { Metadata } from "next";
 import {
   Band,
@@ -20,6 +21,7 @@ import { PlatformFan } from "@/components/platform-fan";
 import { GrainText } from "@/components/grain-text";
 import { Reveal } from "@/components/reveal";
 import { PlatformMark } from "@/components/platform-mark";
+import { MagicAgentFigure } from "@/components/magic-agent-demo/figure";
 import { columnDelay } from "@/lib/stagger";
 import {
   clients,
@@ -103,41 +105,49 @@ export default function Home() {
 
         <div className="flex flex-col">
           {platforms.map((p) => (
-            <Reveal
-              key={p.slug}
-              className="flex flex-col gap-6 border-b border-line py-10 lg:flex-row lg:items-start lg:gap-16"
-            >
-              <div className="flex items-center gap-4 lg:w-[280px] lg:shrink-0">
-                <PlatformMark platform={p} size="lg" />
-                <div className="flex flex-col">
-                  <h3 className="m-0 font-display text-xl leading-snug font-semibold tracking-tighter">
-                    {p.name}
-                  </h3>
-                  <span className="font-mono text-xs tracking-wide text-muted">
-                    {p.kind}
-                  </span>
+            <Fragment key={p.slug}>
+              <Reveal
+                className={`flex flex-col gap-6 py-10 lg:flex-row lg:items-start lg:gap-16 ${
+                  p.slug === "magic-agent" ? "" : "border-b border-line"
+                }`}
+              >
+                <div className="flex items-center gap-4 lg:w-[280px] lg:shrink-0">
+                  <PlatformMark platform={p} size="lg" />
+                  <div className="flex flex-col">
+                    <h3 className="m-0 font-display text-xl leading-snug font-semibold tracking-tighter">
+                      {p.name}
+                    </h3>
+                    <span className="font-mono text-xs tracking-wide text-muted">
+                      {p.kind}
+                    </span>
+                  </div>
                 </div>
-              </div>
 
-              <div className="flex flex-1 flex-col gap-4">
-                <p className="m-0 font-display text-xl leading-snug font-medium tracking-tight">
-                  {p.claim}
-                </p>
-                <CardText className="max-w-measure">{p.intro}</CardText>
-                <ButtonRow>
-                  <Button
-                    href={`/platforms/${p.slug}`}
-                    variant="outline"
-                    size="sm"
-                  >
-                    Details
-                  </Button>
-                  <Button href={p.url} variant="ghost" size="sm">
-                    Visit {p.name} ↗
-                  </Button>
-                </ButtonRow>
-              </div>
-            </Reveal>
+                <div className="flex flex-1 flex-col gap-4">
+                  <p className="m-0 font-display text-xl leading-snug font-medium tracking-tight">
+                    {p.claim}
+                  </p>
+                  <CardText className="max-w-measure">{p.intro}</CardText>
+                  <ButtonRow>
+                    <Button
+                      href={`/platforms/${p.slug}`}
+                      variant="outline"
+                      size="sm"
+                    >
+                      Details
+                    </Button>
+                    <Button href={p.url} variant="ghost" size="sm">
+                      Visit {p.name} ↗
+                    </Button>
+                  </ButtonRow>
+                </div>
+              </Reveal>
+              {p.slug === "magic-agent" && (
+                <Reveal className="border-b border-line pb-10">
+                  <MagicAgentFigure />
+                </Reveal>
+              )}
+            </Fragment>
           ))}
         </div>
       </Section>
@@ -146,7 +156,9 @@ export default function Home() {
       <Section id="services">
         <Reveal className="flex flex-col gap-4">
           <Eyebrow>Services</Eyebrow>
-          <SectionTitle>The work that made the products necessary.</SectionTitle>
+          <SectionTitle>
+            The work that made the products necessary.
+          </SectionTitle>
           <Lede>
             Automation without a working front door just loses enquiries faster.
           </Lede>
@@ -207,7 +219,10 @@ export default function Home() {
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {industries.map((ind, i) => (
-            <Reveal key={ind.title} className={columnDelay(i, { sm: 2, lg: 4 })}>
+            <Reveal
+              key={ind.title}
+              className={columnDelay(i, { sm: 2, lg: 4 })}
+            >
               <Card className="h-full border-transparent bg-sunken">
                 <CardTitle className="text-lg">{ind.title}</CardTitle>
                 <CardText>{ind.text}</CardText>
@@ -240,9 +255,7 @@ export default function Home() {
           </div>
         </div>
 
-        <p className="sr-only">
-          Selected clients: {clients.join(", ")}.
-        </p>
+        <p className="sr-only">Selected clients: {clients.join(", ")}.</p>
 
         <Reveal className="flex flex-col gap-4">
           <Eyebrow>We work with</Eyebrow>

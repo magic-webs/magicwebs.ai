@@ -20,6 +20,7 @@ import { PlatformFan } from "@/components/platform-fan";
 import { GrainText } from "@/components/grain-text";
 import { Reveal } from "@/components/reveal";
 import { PlatformMark } from "@/components/platform-mark";
+import { columnDelay } from "@/lib/stagger";
 import {
   clients,
   company,
@@ -101,10 +102,9 @@ export default function Home() {
         </Reveal>
 
         <div className="flex flex-col">
-          {platforms.map((p, i) => (
+          {platforms.map((p) => (
             <Reveal
               key={p.slug}
-              delay={(i % 3) as 0 | 1 | 2}
               className="flex flex-col gap-6 border-b border-line py-10 lg:flex-row lg:items-start lg:gap-16"
             >
               <div className="flex items-center gap-4 lg:w-[280px] lg:shrink-0">
@@ -154,7 +154,7 @@ export default function Home() {
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {services.map((s, i) => (
-            <Reveal key={s.title} delay={(i % 3) as 0 | 1 | 2}>
+            <Reveal key={s.title} className={columnDelay(i, { md: 2, lg: 3 })}>
               <Card className="h-full">
                 <CardTitle className="text-lg">{s.title}</CardTitle>
                 <CardText>{s.text}</CardText>
@@ -181,7 +181,7 @@ export default function Home() {
 
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {steps.map((s, i) => (
-            <Reveal key={s.num} delay={(i % 4) as 0 | 1 | 2 | 3}>
+            <Reveal key={s.num} className={columnDelay(i, { sm: 2, lg: 4 })}>
               <div className="flex flex-col gap-3 border-t-2 border-cream pt-6">
                 <span className="font-mono text-xs tracking-wider text-cream/60 uppercase">
                   {s.num}
@@ -207,7 +207,7 @@ export default function Home() {
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {industries.map((ind, i) => (
-            <Reveal key={ind.title} delay={(i % 4) as 0 | 1 | 2 | 3}>
+            <Reveal key={ind.title} className={columnDelay(i, { sm: 2, lg: 4 })}>
               <Card className="h-full border-transparent bg-sunken">
                 <CardTitle className="text-lg">{ind.title}</CardTitle>
                 <CardText>{ind.text}</CardText>

@@ -124,6 +124,15 @@
     }
   }
 
+  --animate-rise: rise 520ms var(--ease-out) both;
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(0.875rem);
+    }
+  }
+
   /* ---- containers ---- */
   --container-site: 1172px;
   --container-wide: 1480px;

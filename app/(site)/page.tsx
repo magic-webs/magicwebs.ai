@@ -40,22 +40,22 @@ export default function Home() {
     <Container className="flex flex-col pt-[clamp(0.5rem,2vw,1.5rem)]">
       {/* ---------- Hero ---------- */}
       <section className="flex flex-col gap-[clamp(1.25rem,2.5vw,2rem)] pt-[clamp(1rem,3vw,2.5rem)]">
-        <Reveal>
+        <div className="animate-rise">
           <Display>
             <GrainText>Automate your business</GrainText>
             <span className="block">
               with <span className="text-terracotta">Magic&nbsp;Webs.</span>
             </span>
           </Display>
-        </Reveal>
+        </div>
 
-        <Reveal delay={1}>
+        <div className="animate-rise [animation-delay:80ms]">
           <p className="m-0 max-w-[62ch] font-mono text-lg leading-normal">
             {company.heroSub}
           </p>
-        </Reveal>
+        </div>
 
-        <Reveal delay={2} className="flex flex-col gap-6">
+        <div className="flex animate-rise flex-col gap-6 [animation-delay:160ms]">
           <ButtonRow>
             <Button href="/contact" size="lg">
               Book a demo
@@ -69,7 +69,7 @@ export default function Home() {
             <Chip outline>Google certified</Chip>
             <Chip outline>Noida &amp; Delhi</Chip>
           </div>
-        </Reveal>
+        </div>
       </section>
 
       {/* ---------- Platform fan ---------- */}

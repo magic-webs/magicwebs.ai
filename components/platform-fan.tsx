@@ -38,19 +38,24 @@ export function PlatformFan({ platforms }: { platforms: Platform[] }) {
     const cards = Array.from(el.querySelectorAll<HTMLElement>("[data-fan-card]"));
 
     const ctx = gsap.context(() => {
-      gsap.from(cards, {
-        y: 90,
-        scale: 0.92,
-        opacity: 0,
-        duration: 0.9,
-        ease: "power3.out",
-        stagger: 0.09,
-        scrollTrigger: {
-          trigger: el,
-          start: "top 88%",
-          once: true,
+      gsap.fromTo(
+        cards,
+        { y: 90, scale: 0.92, opacity: 0 },
+        {
+          y: 0,
+          scale: 1,
+          opacity: 1,
+          duration: 0.9,
+          ease: "expo.out",
+          stagger: 0.06,
+          clearProps: "transform",
+          scrollTrigger: {
+            trigger: el,
+            start: "top 88%",
+            once: true,
+          },
         },
-      });
+      );
     }, el);
 
     return () => ctx.revert();
@@ -75,7 +80,7 @@ export function PlatformFan({ platforms }: { platforms: Platform[] }) {
             key={p.slug}
             data-fan-card
             style={{ "--tilt": TILT[i % TILT.length] } as React.CSSProperties}
-            className="shrink-0 snap-center"
+            className="shrink-0 snap-center js:motion-safe:opacity-0"
           >
             <Link
               href={`/platforms/${p.slug}`}

@@ -80,7 +80,7 @@ export function PlatformFan({ platforms }: { platforms: Platform[] }) {
             key={p.slug}
             data-fan-card
             style={{ "--tilt": TILT[i % TILT.length] } as React.CSSProperties}
-            className="shrink-0 snap-center js:motion-safe:opacity-0"
+            className="group/fan shrink-0 snap-center js:motion-safe:opacity-0"
           >
             <Link
               href={`/platforms/${p.slug}`}
@@ -89,8 +89,8 @@ export function PlatformFan({ platforms }: { platforms: Platform[] }) {
                 "transition-[transform,box-shadow] duration-300 ease-out",
                 "sm:w-[340px] lg:w-[360px]",
                 // Tilt only where the cards overlap; stacked cards stay upright.
-                "lg:[transform:rotate(var(--tilt))] lg:hover:z-3 lg:hover:[transform:rotate(calc(var(--tilt)*0.7))_translateY(-8px)_scale(1.02)]",
-                "hover:shadow-card-lift",
+                "lg:[transform:rotate(var(--tilt))] lg:group-hover/fan:z-3 lg:group-hover/fan:[transform:rotate(calc(var(--tilt)*0.7))_translateY(-8px)_scale(1.02)]",
+                "group-hover/fan:shadow-card-lift",
                 t.card,
               )}
             >

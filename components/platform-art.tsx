@@ -235,7 +235,8 @@ export function PlatformArt({ slug }: { slug: string }) {
   };
 
   return (
-    <div className="absolute inset-x-0 bottom-0 h-[52%] overflow-hidden">
+    // Ends above the card's Explore row, so the art never sits on the link.
+    <div className="absolute inset-x-0 bottom-16 h-[44%] overflow-hidden">
       {art[slug] ?? null}
     </div>
   );

@@ -86,11 +86,18 @@ export function PlatformFan({ platforms }: { platforms: Platform[] }) {
               href={`/platforms/${p.slug}`}
               className={cx(
                 "group relative flex aspect-[377/550] w-[78vw] max-w-[360px] flex-col overflow-hidden rounded-3xl border border-black/10 no-underline shadow-card",
-                "transition-[transform,box-shadow] duration-300 ease-out",
+                // One strong ease-out for lift, press and shadow alike.
+                "transition-[transform,scale,box-shadow] duration-250 [transition-timing-function:cubic-bezier(0.23,1,0.32,1)]",
                 "sm:w-[340px] lg:w-[360px]",
                 // Tilt only where the cards overlap; stacked cards stay upright.
-                "lg:[transform:rotate(var(--tilt))] lg:group-hover/fan:z-3 lg:group-hover/fan:[transform:rotate(calc(var(--tilt)*0.7))_translateY(-8px)_scale(1.02)]",
-                "group-hover/fan:shadow-card-lift",
+                // Keyboard focus lifts the card exactly as hover does.
+                "lg:[transform:rotate(var(--tilt))] lg:group-hover/fan:z-3 lg:focus-visible:z-3",
+                "lg:motion-safe:group-hover/fan:[transform:rotate(calc(var(--tilt)*0.7))_translateY(-8px)_scale(1.02)]",
+                "lg:motion-safe:focus-visible:[transform:rotate(calc(var(--tilt)*0.7))_translateY(-8px)_scale(1.02)]",
+                "group-hover/fan:shadow-card-lift focus-visible:shadow-card-lift",
+                // Press: the separate scale property composes with the tilt.
+                "motion-safe:active:scale-[0.98]",
+                "outline-none focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ink",
                 t.card,
               )}
             >

@@ -277,6 +277,83 @@
   will-change: filter;
 }
 
+/* The crisp copy the loop resolves into. Hidden unless the loop runs. */
+.grain-ink {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  color: var(--grain-ink, var(--color-ink));
+  pointer-events: none;
+  opacity: 0;
+}
+
+/* The loop: messy spray pulls into clean ink, holds, and dissolves back.
+   Only opacity and a small blur move, so it runs on the compositor; the
+   turbulence filters themselves never re-render. 8s a cycle, eased in and
+   out per segment, so each change starts and settles gently. */
+@media (min-width: 640px) and (prefers-reduced-motion: no-preference) {
+  .grain::before,
+  .grain::after {
+    animation: grain-spray 8s cubic-bezier(0.65, 0, 0.35, 1) 1.2s infinite both;
+  }
+  .grain-paper {
+    animation: grain-paper 8s cubic-bezier(0.65, 0, 0.35, 1) 1.2s infinite both;
+  }
+  .grain-ink {
+    will-change: opacity, filter;
+    animation: grain-ink 8s cubic-bezier(0.65, 0, 0.35, 1) 1.2s infinite both;
+  }
+}
+
+@keyframes grain-spray {
+  0%,
+  38% {
+    opacity: 1;
+  }
+  50%,
+  84% {
+    opacity: 0;
+  }
+  96%,
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes grain-paper {
+  0%,
+  38% {
+    opacity: 0.6;
+  }
+  50%,
+  84% {
+    opacity: 0;
+  }
+  96%,
+  100% {
+    opacity: 0.6;
+  }
+}
+
+@keyframes grain-ink {
+  0%,
+  38% {
+    opacity: 0;
+    filter: blur(10px);
+  }
+  50%,
+  84% {
+    opacity: 1;
+    filter: blur(0);
+  }
+  96%,
+  100% {
+    opacity: 0;
+    filter: blur(10px);
+  }
+}
+
 /* The filtered layers cannot wrap (they redraw a single attr string), so on
    narrow screens fall back to plain type rather than let a long line overrun. */
 @media (max-width: 639px) {
@@ -285,7 +362,8 @@
   }
   .grain::before,
   .grain::after,
-  .grain-paper {
+  .grain-paper,
+  .grain-ink {
     display: none;
   }
 }

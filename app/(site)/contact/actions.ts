@@ -69,7 +69,7 @@ export async function submitEnquiry(
     return {
       status: "error",
       message:
-        "We could not save that just now. Please email contact@magicwebs.in or call us.",
+        "We could not save that just now. Please email contact@magicwebs.ai or call us.",
     };
   }
 

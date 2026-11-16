@@ -27,6 +27,11 @@ export function GrainText({
       <span className="grain-paper" aria-hidden="true">
         {children}
       </span>
+      {/* A crisp copy the loop resolves into: the spray pulls into clean ink,
+          holds, and dissolves back (globals.css, grain loop). */}
+      <span className="grain-ink" aria-hidden="true">
+        {children}
+      </span>
     </span>
   );
 }

@@ -22,7 +22,7 @@ import { company, platforms } from "@/lib/site";
 export const metadata: Metadata = pageMeta({
   title: "Contact",
   description:
-    "Talk to Magic Webs — contact@magicwebs.in, 9999-064-055. Offices in Noida and Delhi, open Mon–Sun 9am–6pm.",
+    "Talk to Magic Webs — contact@magicwebs.ai, 9999-064-055. Offices in Noida and Delhi, open Mon–Sun 9am–6pm.",
   path: "/contact",
 });
 

@@ -17,7 +17,7 @@ export const company = {
   sub: "AI agents that sell on WhatsApp, forms your team can ship, campaigns that turn footfall into customers, creator marketing with escrow, and a native UI kit — built and run by Magic Webs.",
   blurb:
     "A decade of putting businesses online — websites, storefronts, search, WhatsApp. Magic Webs is where that work became product.",
-  email: "contact@magicwebs.in",
+  email: "contact@magicwebs.ai",
   phone: "9999-064-055",
   phoneHref: "+919999064055",
   hours: "Mon–Sun, 9am–6pm",
@@ -73,7 +73,8 @@ export const platforms: Platform[] = [
     theme: "forest",
     initials: "AG",
     swatch: "var(--color-teal)",
-    logo: "/images/platforms/logos/magic-agent.png",
+    // Magic Agent carries the Magic Webs mark itself.
+    logo: "/logo.png",
     intro:
       "Answers enquiries on WhatsApp from your pricing and policies — not the open internet — then hands your team a structured enquiry, ready to price.",
     features: [

@@ -1,243 +1,268 @@
+import type { ReactNode } from "react";
+import Image from "next/image";
+import {
+  BadgeCheck,
+  Check,
+  Gift,
+  ShieldCheck,
+  Terminal,
+  Webhook,
+} from "lucide-react";
+import { cx } from "@/components/ui";
+
 /**
- * Abstract artwork for each platform card.
- *
- * These are drawn, not photographed — we have no product photography for the
- * platforms, and inventing stock imagery would misrepresent them. Each one
- * depicts the thing the product actually does.
+ * The artwork on each platform card: a small product scene, not a mock-up of
+ * a real screen. Each one is a main surface and one satellite that tell the
+ * same story as the platform's demo further down the page, with only a few
+ * real words. Everything is sized in em off a font size that follows the
+ * space the card leaves (its width and its height), so each scene fits from
+ * a 300px phone card to 360px without running into the card's text.
  */
-export function PlatformArt({ slug }: { slug: string }) {
-  const art: Record<string, React.ReactNode> = {
-    /* Conversation: stacked WhatsApp-style bubbles resolving into a record. */
-    "magic-agent": (
-      <svg viewBox="0 0 340 300" className="h-full w-full" aria-hidden="true">
-        <defs>
-          <linearGradient id="ag-g" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="#c3d3ce" stopOpacity="0.95" />
-            <stop offset="100%" stopColor="#1c525d" stopOpacity="0.85" />
-          </linearGradient>
-        </defs>
-        <rect width="340" height="300" fill="url(#ag-g)" opacity="0.18" />
-        {[
-          { x: 28, y: 40, w: 168, r: "18 18 18 4" },
-          { x: 120, y: 104, w: 190, r: "18 18 4 18" },
-          { x: 28, y: 168, w: 140, r: "18 18 18 4" },
-        ].map((b, i) => (
-          <g key={i}>
-            <rect
-              x={b.x}
-              y={b.y}
-              width={b.w}
-              height="48"
-              rx="16"
-              fill={i === 1 ? "#c3d3ce" : "rgba(251,250,244,0.14)"}
-              stroke="rgba(251,250,244,0.22)"
-            />
-            <rect
-              x={b.x + 16}
-              y={b.y + 17}
-              width={b.w * 0.5}
-              height="6"
-              rx="3"
-              fill={i === 1 ? "rgba(14,17,19,0.45)" : "rgba(251,250,244,0.5)"}
-            />
-            <rect
-              x={b.x + 16}
-              y={b.y + 29}
-              width={b.w * 0.32}
-              height="6"
-              rx="3"
-              fill={i === 1 ? "rgba(14,17,19,0.25)" : "rgba(251,250,244,0.28)"}
-            />
-          </g>
-        ))}
-        <rect
-          x="28"
-          y="232"
-          width="282"
-          height="44"
-          rx="12"
-          fill="rgba(251,250,244,0.08)"
-          stroke="rgba(251,250,244,0.3)"
-          strokeDasharray="5 5"
-        />
-      </svg>
-    ),
 
-    /* Reach: a creator node broadcasting into widening rings. */
-    richyreach: (
-      <svg viewBox="0 0 340 300" className="h-full w-full" aria-hidden="true">
-        {[132, 104, 76, 48].map((r, i) => (
-          <circle
-            key={r}
-            cx="170"
-            cy="150"
-            r={r}
-            fill="none"
-            stroke="rgba(14,17,19,0.28)"
-            strokeWidth={1.5}
-            strokeDasharray={i % 2 ? "6 8" : undefined}
-          />
-        ))}
-        <circle cx="170" cy="150" r="26" fill="#0e1113" />
-        <circle cx="170" cy="150" r="9" fill="#db704c" />
-        {[
-          [170, 18],
-          [292, 104],
-          [246, 254],
-          [94, 254],
-          [48, 104],
-        ].map(([cx, cy], i) => (
-          <g key={i}>
-            <circle cx={cx} cy={cy} r="15" fill="rgba(14,17,19,0.85)" />
-            <circle cx={cx} cy={cy} r="5" fill="#f8dbca" />
-          </g>
-        ))}
-      </svg>
-    ),
+/** One stroke and size for every icon, so the set reads as one family. */
+const icon = "size-[1.15em] shrink-0";
+const stroke = 1.75;
 
-    /* Odds: a weighted prize wheel. */
-    "magic-reward": (
-      <svg viewBox="0 0 340 300" className="h-full w-full" aria-hidden="true">
-        <g transform="translate(170 154)">
-          {Array.from({ length: 8 }).map((_, i) => {
-            const a0 = (i * Math.PI) / 4;
-            const a1 = ((i + 1) * Math.PI) / 4;
-            const R = 118;
+/** A raised surface on a light card. */
+const paper =
+  "rounded-[0.9em] bg-paper text-ink shadow-[0_1px_2px_rgba(14,17,19,0.08),0_10px_24px_-12px_rgba(14,17,19,0.35)]";
+
+/** The satellite: smaller, a step higher, overlapping the main surface. */
+const satellite =
+  "absolute z-2 inline-flex items-center gap-[0.5em] whitespace-nowrap rounded-full px-[0.85em] py-[0.5em] text-[0.92em] font-medium leading-none shadow-[0_2px_4px_rgba(14,17,19,0.12),0_14px_28px_-12px_rgba(14,17,19,0.5)]";
+
+function Scene({ children }: { children: ReactNode }) {
+  return (
+    <div className="absolute inset-0 grid place-items-center px-[1.9em] font-display text-[min(4.3cqw,7.4cqh)] leading-snug tracking-[-0.01em]">
+      <div className="relative w-full">{children}</div>
+    </div>
+  );
+}
+
+/* Magic Agent: the customer asks, the agent answers from your documents,
+   and the enquiry comes out ready to price. */
+function AgentScene() {
+  return (
+    <Scene>
+      <div className="flex flex-col gap-[0.55em]">
+        <div className="max-w-[86%] self-start rounded-[0.9em] rounded-bl-[0.3em] bg-cream/12 px-[0.85em] py-[0.6em] text-cream">
+          500 tote bags, 2 colours?
+        </div>
+        {/* The reply is signed with the Magic Agent mark: the product answers */}
+        <div className="flex max-w-[92%] items-end gap-[0.45em] self-end">
+          <div className="rounded-[0.9em] rounded-br-[0.3em] bg-teal px-[0.85em] py-[0.6em] text-ink">
+            Done. Ships in 7 days.
+          </div>
+          <span className="grid size-[1.9em] shrink-0 place-items-center overflow-hidden rounded-full bg-cream">
+            {/* The source art has wide margins: scale the M to fill the disc */}
+            <Image
+              src="/logo.png"
+              alt=""
+              width={64}
+              height={64}
+              className="size-full scale-[1.45] object-contain"
+            />
+          </span>
+        </div>
+        {/* The result follows the answer it came from */}
+        <span className={cx(satellite, "relative mt-[0.35em] mr-[2.35em] self-end bg-cream text-ink")}>
+          <span className="grid size-[1.35em] place-items-center rounded-full bg-success text-cream">
+            <Check className="size-[0.85em]" strokeWidth={3} aria-hidden />
+          </span>
+          Ready to price
+        </span>
+      </div>
+    </Scene>
+  );
+}
+
+/* RichyReach: a verified creator with real stats, and the escrow released
+   on approval. */
+function ReachScene() {
+  const stats = [
+    ["128K", "Followers"],
+    ["6.2%", "Engagement"],
+    ["₹40K", "Per reel"],
+  ];
+  return (
+    <Scene>
+      <div className={cx(paper, "mb-[1.3em] flex flex-col gap-[0.85em] p-[0.95em]")}>
+        <div className="flex items-center gap-[0.75em]">
+          <span className="grid size-[2.5em] shrink-0 place-items-center rounded-full bg-[#b9532f] text-[1.05em] font-semibold text-cream">
+            A
+          </span>
+          <span className="flex min-w-0 flex-col gap-[0.2em]">
+            <span className="inline-flex items-center gap-[0.35em] font-semibold">
+              Ananya Rao
+              <BadgeCheck className={cx(icon, "text-[#b9532f]")} strokeWidth={stroke} aria-hidden />
+            </span>
+            <span className="text-[0.88em] text-ink/60">Beauty · Pune</span>
+          </span>
+        </div>
+        <div className="grid grid-cols-3 gap-[0.4em]">
+          {stats.map(([value, label]) => (
+            <span key={label} className="flex flex-col gap-[0.15em] rounded-[0.55em] bg-ink/5 px-[0.6em] py-[0.5em]">
+              <span className="font-semibold tracking-[-0.02em]">{value}</span>
+              <span className="text-[0.76em] text-ink/55">{label}</span>
+            </span>
+          ))}
+        </div>
+      </div>
+      <span className={cx(satellite, "right-[0.6em] bottom-0 bg-ink text-cream")}>
+        <ShieldCheck className={icon} strokeWidth={stroke} aria-hidden />
+        ₹40,000 released
+      </span>
+    </Scene>
+  );
+}
+
+/* Magic Reward: a branded prize wheel, and what it landed on. */
+function RewardScene() {
+  const R = 46;
+  // Cream and sage wedges; the winning wedge under the pointer takes the accent
+  const fills = ["#db704c", "#fbfaf4", "#7f8a6c", "#fbfaf4", "#c9cfb8", "#fbfaf4", "#7f8a6c", "#fbfaf4"];
+  return (
+    <Scene>
+      <div className="flex items-center justify-start">
+        <svg viewBox="-60 -64 120 124" className="w-[56%] drop-shadow-[0_10px_14px_rgba(14,17,19,0.25)]" aria-hidden="true">
+          <circle r="54" fill="#2a302b" />
+          {fills.map((fill, i) => {
+            const a0 = ((i * 45 - 112.5) * Math.PI) / 180;
+            const a1 = ((i * 45 - 67.5) * Math.PI) / 180;
             return (
               <path
                 key={i}
-                d={`M0 0 L${R * Math.cos(a0)} ${R * Math.sin(a0)} A${R} ${R} 0 0 1 ${
-                  R * Math.cos(a1)
-                } ${R * Math.sin(a1)} Z`}
-                fill={
-                  i % 3 === 0
-                    ? "rgba(14,17,19,0.82)"
-                    : i % 3 === 1
-                      ? "rgba(251,250,244,0.5)"
-                      : "rgba(14,17,19,0.22)"
-                }
-                stroke="rgba(14,17,19,0.3)"
+                d={`M0 0 L${(R * Math.cos(a0)).toFixed(2)} ${(R * Math.sin(a0)).toFixed(2)} A${R} ${R} 0 0 1 ${(R * Math.cos(a1)).toFixed(2)} ${(R * Math.sin(a1)).toFixed(2)} Z`}
+                fill={fill}
+                stroke="#2a302b"
+                strokeWidth="0.8"
               />
             );
           })}
-          <circle r="26" fill="#fbfaf4" stroke="rgba(14,17,19,0.3)" />
-          <circle r="7" fill="#0e1113" />
-        </g>
-        <path d="M170 18 l14 26 h-28 Z" fill="#0e1113" />
-      </svg>
-    ),
+          {/* Studs around the rim, as a real prize wheel has */}
+          {Array.from({ length: 16 }).map((_, i) => {
+            const a = ((i * 22.5 - 90) * Math.PI) / 180;
+            return <circle key={i} cx={(50 * Math.cos(a)).toFixed(2)} cy={(50 * Math.sin(a)).toFixed(2)} r="1.6" fill="#f3e3b5" />;
+          })}
+          <circle r="9" fill="#fbfaf4" stroke="#2a302b" strokeWidth="2.5" />
+          <circle r="3" fill="#2a302b" />
+          <path d="M0 -44 -7 -60 H7 Z" fill="#2a302b" stroke="#fbfaf4" strokeWidth="1.5" strokeLinejoin="round" />
+        </svg>
+      </div>
+      <div className={cx(paper, "absolute right-0 bottom-[8%] z-2 flex items-center gap-[0.65em] py-[0.75em] pr-[1em] pl-[0.8em]")}>
+        <span className="grid size-[2.1em] place-items-center rounded-[0.6em] bg-sage/45 text-ink">
+          <Gift className={icon} strokeWidth={stroke} aria-hidden />
+        </span>
+        <span className="flex flex-col gap-[0.15em]">
+          <span className="text-[0.82em] text-ink/60">You won</span>
+          <span className="text-[1.15em] font-semibold tracking-[-0.02em]">20% off</span>
+        </span>
+      </div>
+    </Scene>
+  );
+}
 
-    /* Steps: a multi-step form with a progress rail. */
-    "magic-forms": (
-      <svg viewBox="0 0 340 300" className="h-full w-full" aria-hidden="true">
-        <g>
-          {[0, 1, 2].map((i) => (
-            <g key={i} transform={`translate(0 ${i * 40})`}>
-              <circle
-                cx="42"
-                cy="56"
-                r="11"
-                fill={i === 0 ? "#0e1113" : "none"}
-                stroke="rgba(14,17,19,0.45)"
-                strokeWidth="1.5"
-              />
-              {i < 2 && (
-                <line
-                  x1="42"
-                  y1="67"
-                  x2="42"
-                  y2="85"
-                  stroke="rgba(14,17,19,0.28)"
-                  strokeWidth="1.5"
-                />
-              )}
-            </g>
-          ))}
-        </g>
-        {[0, 1, 2, 3].map((i) => (
-          <rect
-            key={i}
-            x="76"
-            y={38 + i * 40}
-            width={i === 3 ? 140 : 226}
-            height="34"
-            rx="9"
-            fill="rgba(251,250,244,0.72)"
-            stroke="rgba(14,17,19,0.22)"
-          />
-        ))}
-        <rect
-          x="76"
-          y="200"
-          width="120"
-          height="36"
-          rx="18"
-          fill="#0e1113"
-        />
-        <rect x="96" y="214" width="80" height="8" rx="4" fill="#fbfaf4" />
-        <rect
-          x="76"
-          y="256"
-          width="226"
-          height="6"
-          rx="3"
-          fill="rgba(14,17,19,0.14)"
-        />
-        <rect x="76" y="256" width="142" height="6" rx="3" fill="#0e1113" />
-      </svg>
-    ),
-
-    /* One source, three platforms. */
-    "magic-native-ui": (
-      <svg viewBox="0 0 340 300" className="h-full w-full" aria-hidden="true">
-        <rect
-          x="26"
-          y="52"
-          width="86"
-          height="182"
-          rx="16"
-          fill="rgba(251,250,244,0.7)"
-          stroke="rgba(14,17,19,0.3)"
-        />
-        <rect
-          x="126"
-          y="36"
-          width="86"
-          height="214"
-          rx="16"
-          fill="rgba(14,17,19,0.85)"
-        />
-        <rect
-          x="226"
-          y="52"
-          width="88"
-          height="182"
-          rx="12"
-          fill="rgba(251,250,244,0.7)"
-          stroke="rgba(14,17,19,0.3)"
-        />
-        {[0, 1, 2].map((c) =>
-          [0, 1, 2, 3].map((r) => (
-            <rect
-              key={`${c}-${r}`}
-              x={[42, 142, 242][c]}
-              y={[80, 68, 80][c] + r * 30}
-              width={[54, 54, 56][c]}
-              height="18"
-              rx="6"
-              fill={c === 1 ? "rgba(251,250,244,0.28)" : "rgba(14,17,19,0.16)"}
-            />
-          )),
-        )}
-        <rect x="142" y="196" width="54" height="20" rx="10" fill="#c3d3ce" />
-      </svg>
-    ),
-  };
-
+/* Magic Forms: one field being answered, and the webhook it fires. */
+function FormsScene() {
+  const options = ["1–10", "11–50", "51–200", "200+"];
   return (
-    // Ends above the card's Explore row, so the art never sits on the link.
-    <div className="absolute inset-x-0 bottom-16 h-[44%] overflow-hidden">
-      {art[slug] ?? null}
+    <Scene>
+      <div className={cx(paper, "mb-[1.5em] flex flex-col gap-[0.7em] p-[1em]")}>
+        <span className="flex gap-[0.3em]" aria-hidden>
+          {[0, 1, 2].map((s) => (
+            <span key={s} className={cx("h-[0.25em] flex-1 rounded-full", s < 2 ? "bg-ink" : "bg-ink/12")} />
+          ))}
+        </span>
+        <span className="font-medium">Company size</span>
+        <span className="grid grid-cols-2 gap-[0.4em]">
+          {options.map((o) => (
+            <span
+              key={o}
+              className={cx(
+                "rounded-[0.55em] px-[0.7em] py-[0.42em] text-[0.9em]",
+                o === "51–200" ? "bg-ink text-cream" : "border border-ink/15 text-ink/75",
+              )}
+            >
+              {o}
+            </span>
+          ))}
+        </span>
+      </div>
+      <span className={cx(satellite, "right-[0.6em] bottom-0 bg-ink text-cream")}>
+        <Webhook className={icon} strokeWidth={stroke} aria-hidden />
+        <span className="font-mono text-[0.92em] font-normal">submission.created</span>
+        <span className="rounded-full bg-success px-[0.45em] py-[0.2em] font-mono text-[0.85em] text-cream">200</span>
+      </span>
+    </Scene>
+  );
+}
+
+/* Magic Native UI: one component set, the same screen on iOS and Android. */
+function Device({ island }: { island: "pill" | "dot" }) {
+  return (
+    <div className="flex h-[10.2em] w-[6.6em] flex-col rounded-[1.4em] border-[0.28em] border-ink bg-paper px-[0.6em] pt-[0.5em] pb-[0.65em] shadow-[0_10px_24px_-12px_rgba(14,17,19,0.45)]">
+      <span
+        className={cx(
+          "mx-auto bg-ink",
+          island === "pill" ? "h-[0.5em] w-[2.2em] rounded-full" : "size-[0.5em] rounded-full",
+        )}
+        aria-hidden
+      />
+      <span className="mt-[1em] text-[0.82em] leading-tight font-semibold">Enter code</span>
+      <span className="mt-[0.2em] h-[0.32em] w-[70%] rounded-full bg-ink/12" aria-hidden />
+      <span className="mt-[0.8em] grid grid-cols-4 gap-[0.25em]" aria-hidden>
+        {["4", "8", "1", ""].map((d, i) => (
+          <span
+            key={i}
+            className={cx(
+              "grid h-[1.55em] place-items-center rounded-[0.35em] text-[0.78em] font-semibold",
+              d ? "border border-ink/20" : "border-[1.5px] border-ink",
+            )}
+          >
+            {d}
+          </span>
+        ))}
+      </span>
+      <span className="mt-auto rounded-[0.55em] bg-ink py-[0.45em] text-center text-[0.74em] font-medium text-cream">
+        Continue
+      </span>
+    </div>
+  );
+}
+
+function NativeScene() {
+  return (
+    <Scene>
+      <div className="flex items-end justify-center gap-[1.6em] pb-[2.2em]">
+        <Device island="pill" />
+        <Device island="dot" />
+      </div>
+      <span className={cx(satellite, "bottom-0 left-1/2 -translate-x-1/2 bg-ink text-cream")}>
+        <Terminal className={icon} strokeWidth={stroke} aria-hidden />
+        <span className="font-mono text-[0.9em] font-normal">add otp-input</span>
+      </span>
+    </Scene>
+  );
+}
+
+const scenes: Record<string, () => ReactNode> = {
+  "magic-agent": AgentScene,
+  richyreach: ReachScene,
+  "magic-reward": RewardScene,
+  "magic-forms": FormsScene,
+  "magic-native-ui": NativeScene,
+};
+
+export function PlatformArt({ slug }: { slug: string }) {
+  const Scene = scenes[slug];
+  return (
+    // In the card's flow: it takes the room between the copy and the Explore
+    // row, so it never sits on either. The container sets the scene's scale.
+    <div
+      aria-hidden="true"
+      className="relative min-h-0 flex-1 overflow-hidden @container-size"
+    >
+      {Scene ? <Scene /> : null}
     </div>
   );
 }

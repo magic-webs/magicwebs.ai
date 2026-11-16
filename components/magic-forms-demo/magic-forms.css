@@ -1,0 +1,324 @@
+/* Magic Forms: the builder and its submissions. Everything nested under .mf. */
+.mf {
+  & .ss-stage {
+    --gutter: 40px;
+    --ss-accent: #1f2328;
+    --ss-font: var(--font-display, 'Inclusive Sans'), 'Helvetica Neue', Helvetica, Arial, system-ui, sans-serif;
+    overflow: hidden;
+    border-radius: 24px;
+    background: #d6d0c3;
+  }
+
+  /* ---- The builder: pinned top-left, off the bottom ---- */
+  .mf-window {
+    position: absolute;
+    top: var(--gutter);
+    left: var(--gutter);
+    width: 800px;
+    height: 620px;
+    box-shadow: var(--ss-shadow-hero);
+  }
+
+  .mf-window .ss-window__heading,
+  .mf-window .ss-window__title {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .mf-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .mf-share { flex: none; }
+
+  /* The palette: the builder's field types */
+  .mf-palette {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 6px 10px;
+  }
+
+  .mf-palette__label {
+    margin: 0 0 6px 8px;
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 1.3;
+    color: var(--ss-text-faint);
+  }
+
+  .mf-palette__item {
+    color: var(--ss-text);
+    transition: background-color 0.15s ease;
+  }
+
+  .mf-palette__item svg { flex: none; }
+
+  .mf-palette__item[data-hover] { background: var(--ss-ink-2); }
+
+  .mf-palette__text { font-size: 13px; line-height: 1.3; }
+
+  /* The canvas the form sits on */
+  .mf-canvas {
+    height: 100%;
+    padding: 28px 32px;
+    background: var(--ss-canvas);
+  }
+
+  .mf-form {
+    display: flex;
+    flex-direction: column;
+    width: 360px;
+    padding: 22px 24px 24px;
+    border-radius: 12px;
+    background: var(--ss-surface);
+    box-shadow: 0 0 0 1px var(--ss-line), 0 1px 2px rgba(0, 0, 0, 0.04);
+  }
+
+  .mf-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .mf-steps__label { font-size: 11px; line-height: 1.3; color: var(--ss-text-faint); }
+
+  .mf-steps__track {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+  }
+
+  .mf-steps__track span {
+    height: 4px;
+    border-radius: 2px;
+    background: var(--ss-ink-2);
+  }
+
+  .mf-steps__track span[data-on] { background: var(--ss-text-strong); }
+
+  .mf-form__title {
+    margin: 16px 0 6px;
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    color: var(--ss-text-strong);
+  }
+
+  .mf-q {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    padding: 10px 0 4px;
+  }
+
+  .mf-q__label { font-size: 13px; font-weight: 500; line-height: 1.3; color: var(--ss-text-strong); }
+
+  .mf-input {
+    display: flex;
+    align-items: center;
+    height: 34px;
+    padding: 0 12px;
+    border-radius: 8px;
+    box-shadow: inset 0 0 0 1px var(--ss-line-strong, var(--ss-line));
+  }
+
+  /* The block the cursor just added stays selected, as the builder shows it */
+  .mf-q--new {
+    gap: 4px;
+    margin: 6px -12px 0;
+    padding: 10px 12px 12px;
+    border-radius: 10px;
+    box-shadow: inset 0 0 0 1.5px transparent;
+    transition: box-shadow 0.2s ease;
+  }
+
+  .mf-q--new[data-selected] { box-shadow: inset 0 0 0 1.5px var(--ss-text-strong); }
+
+  .mf-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .mf-option {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    height: 30px;
+    padding: 0 11px 0 9px;
+    border-radius: 8px;
+    box-shadow: inset 0 0 0 1px var(--ss-line-strong, var(--ss-line));
+    font-size: 12.5px;
+    color: var(--ss-text);
+    white-space: nowrap;
+  }
+
+  .mf-radio {
+    flex: none;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    box-shadow: inset 0 0 0 1.25px var(--ss-text-faint);
+  }
+
+  .mf-form__foot {
+    display: flex;
+    padding-top: 18px;
+  }
+
+  .mf-add {
+    will-change: transform;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: 34px;
+    margin-top: 12px;
+    border-radius: 8px;
+    border: 1px dashed var(--ss-text-faint);
+    color: var(--ss-text);
+    font-size: 12.5px;
+  }
+
+  .mf-add[data-hover] { background: var(--ss-ink-2); }
+
+  /* ---- Submissions: straddles the builder's right edge over canvas ---- */
+  .mf-card {
+    position: absolute;
+    top: 156px;
+    right: var(--gutter);
+    width: 300px;
+    border-radius: 12px;
+    background: var(--ss-surface);
+    box-shadow: var(--ss-shadow-satellite), 0 24px 48px -20px rgba(60, 50, 30, 0.35);
+  }
+
+  .mf-subs {
+    display: flex;
+    flex-direction: column;
+    padding: 14px 16px 16px;
+  }
+
+  .mf-subs__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding-bottom: 8px;
+  }
+
+  .mf-subs__title { font-size: 13px; font-weight: 600; line-height: 1.3; color: var(--ss-text-strong); }
+
+  .mf-subs__count {
+    font-size: 12px;
+    line-height: 1.3;
+    color: var(--ss-text-faint);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* The rows keep the kit's 12px inset; the list gives it back so the
+     words line up with the card's title */
+  .mf-sub {
+    margin-inline: -12px;
+    border-top: 1px solid var(--ss-line-faint);
+  }
+
+  .mf-sub__name { font-size: 13px; font-weight: 500; line-height: 1.3; color: var(--ss-text-strong); }
+  .mf-sub__detail { font-size: 12px; line-height: 1.3; color: var(--ss-text); }
+  .mf-sub__time { font-size: 11px; line-height: 1.3; color: var(--ss-text-faint); }
+
+
+  .mf-hook {
+    will-change: transform;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    background: var(--ss-canvas);
+  }
+
+  .mf-hook__icon { flex: none; color: var(--ss-text); }
+
+  .mf-hook__event {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 12px;
+    line-height: 1.3;
+    color: var(--ss-text-strong);
+  }
+
+  .mf-hook__status { margin-left: auto; flex: none; }
+
+  /* ---- Compact: the form without the palette, the card on its right edge ---- */
+  & .ss-stage[data-layout='compact'] {
+    --gutter: 16px;
+    border-radius: 20px;
+  }
+
+  /* The builder as one panel, off the foot: the bar, then the canvas with
+     the form over its submissions, whose older rows run past the stage */
+  .mf-stack {
+    position: absolute;
+    top: var(--gutter);
+    right: var(--gutter);
+    left: var(--gutter);
+    overflow: hidden;
+    border-radius: 14px;
+    background: var(--ss-canvas);
+    box-shadow: var(--ss-shadow-hero);
+  }
+
+  .mf-sheet__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 12px 10px 28px;
+    border-bottom: 1px solid var(--ss-line);
+    background: var(--ss-surface);
+  }
+
+  .mf-sheet__title { font-size: 14px; font-weight: 600; line-height: 1.3; color: var(--ss-text-strong); }
+
+  .mf-stack__body {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .mf-sheet .mf-form {
+    width: auto;
+    padding: 14px 16px 16px;
+  }
+
+  .mf-sheet .mf-form__title { margin-top: 12px; font-size: 15px; }
+
+  .mf-sheet .mf-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  /* Carried down by the field opening above it: a lasting layer */
+  .mf-stack .mf-hook { margin: 0 0 8px; }
+
+  .mf-stack .mf-card {
+    will-change: transform;
+    position: static;
+    flex: none;
+    width: auto;
+    box-shadow: 0 0 0 1px var(--ss-line), 0 1px 2px rgba(0, 0, 0, 0.04);
+  }
+
+
+}
+
+/* Only the last digit rolls, so proportional figures are safe; the site
+   face's tabular 1 would otherwise stand off from its neighbours */
+.mf .ss-count { font-variant-numeric: proportional-nums; }

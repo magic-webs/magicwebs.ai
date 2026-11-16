@@ -19,7 +19,7 @@ import {
 } from "@/components/ui";
 import { Reveal } from "@/components/reveal";
 import { PlatformMark } from "@/components/platform-mark";
-import { MagicAgentFigure } from "@/components/magic-agent-demo/figure";
+import { PlatformDemo, hasPlatformDemo } from "@/components/platform-demo";
 import { getPlatform, platforms } from "@/lib/site";
 import {
   JsonLd,
@@ -111,9 +111,9 @@ export default async function PlatformPage({
       </section>
 
       {/* ---------- Product demo ---------- */}
-      {platform.slug === "magic-agent" && (
+      {hasPlatformDemo(platform.slug) && (
         <Reveal delay={1} className="pt-[clamp(1.25rem,3vw,2.5rem)]">
-          <MagicAgentFigure />
+          <PlatformDemo slug={platform.slug} />
         </Reveal>
       )}
 

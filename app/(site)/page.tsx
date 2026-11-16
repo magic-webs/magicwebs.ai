@@ -21,7 +21,7 @@ import { PlatformFan } from "@/components/platform-fan";
 import { GrainText } from "@/components/grain-text";
 import { Reveal } from "@/components/reveal";
 import { PlatformMark } from "@/components/platform-mark";
-import { MagicAgentFigure } from "@/components/magic-agent-demo/figure";
+import { PlatformDemo, hasPlatformDemo } from "@/components/platform-demo";
 import { columnDelay } from "@/lib/stagger";
 import {
   clients,
@@ -108,7 +108,7 @@ export default function Home() {
             <Fragment key={p.slug}>
               <Reveal
                 className={`flex flex-col gap-6 py-10 lg:flex-row lg:items-start lg:gap-16 ${
-                  p.slug === "magic-agent" ? "" : "border-b border-line"
+                  hasPlatformDemo(p.slug) ? "" : "border-b border-line"
                 }`}
               >
                 <div className="flex items-center gap-4 lg:w-[280px] lg:shrink-0">
@@ -142,9 +142,9 @@ export default function Home() {
                   </ButtonRow>
                 </div>
               </Reveal>
-              {p.slug === "magic-agent" && (
+              {hasPlatformDemo(p.slug) && (
                 <Reveal className="border-b border-line pb-10">
-                  <MagicAgentFigure />
+                  <PlatformDemo slug={p.slug} />
                 </Reveal>
               )}
             </Fragment>
